@@ -1,0 +1,129 @@
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX abc: <http://localhost/owl/liquorOntology.owl#>
+
+//to populate dropdowns
+
+//alcoholic beverages
+
+SELECT DISTINCT ?alcohol
+WHERE {
+  ?alcohol rdfs:subClassOf abc:Alcoholic_Beverage.
+  
+}
+
+************************************************************
+//to get all instances of alcoholic beverages
+
+SELECT DISTINCT ?alcohol
+WHERE {
+  ?alcoholclass rdfs:subClassOf* abc:Alcoholic_Beverage.
+  ?alcohol rdf:type ?alcoholclass.  
+}
+************************************************************
+
+//smoothness
+
+SELECT DISTINCT ?v_smooth
+WHERE {
+  ?v_smooth rdfs:subClassOf abc:Smoothness.
+  
+}
+
+//price
+
+SELECT DISTINCT ?v_price
+WHERE {
+  ?v_price rdfs:subClassOf abc:Price.
+  
+}
+
+//country
+
+SELECT DISTINCT ?country
+WHERE {
+  ?country rdfs:subClassOf abc:Country.
+  
+}
+
+//to get cocktails that includes GIN
+
+PREFIX abc: <http://localhost/owl/liquorOntology.owl#>
+SELECT DISTINCT ?cocktail
+WHERE {
+  ?alcoholclass rdfs:subClassOf* abc:Gin.
+  ?alcohol rdf:type ?alcoholclass.
+  ?cocktail abc:hasIngredient ?alcohol.
+}
+
+********************************************************
+//populate result table
+SELECT distinct ?cocktail ?ings ?deco ?glass
+WHERE {
+  ?alcoholclass rdfs:subClassOf* abc:Gin.
+  ?alcohol rdf:type ?alcoholclass.
+  ?cocktail abc:hasIngredient ?alcohol.
+  ?cocktail abc:hasIngredient ?ings.
+  ?cocktail abc:hasDecoration ?deco.
+  ?cocktail abc:isServedIn ?glass.
+}
+********************************************************
+
+//to get all ingredients of given cocktail
+
+PREFIX abc: <http://localhost/owl/liquorOntology.owl#>
+SELECT DISTINCT ?ingredient
+WHERE {
+ abc:LongIsland_CT abc:hasIngredient ?ingredient.
+}
+
+//to get all decorations of given cocktail
+
+SELECT DISTINCT ?decoration
+WHERE {
+ abc:LongIsland_CT abc:hasDecoration ?decoration.
+}
+
+//to get serving glass pf given cocktail
+
+SELECT DISTINCT ?glass
+WHERE {
+ abc:LongIsland_CT abc:isServedIn ?glass.
+}
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+//all columns
+
+SELECT distinct ?cocktail ?basealcohol ?secondaryalcohol ?softner ?straw ?deco ?glass
+WHERE {
+  ?alcoholclass rdfs:subClassOf* abc:Whisky.
+  ?basealcohol rdf:type ?alcoholclass.
+  ?cocktail abc:hasOrigin abc:America.
+  ?cocktail abc:hasPrice abc:Expensive.
+  ?cocktail abc:hasSmoothness abc:Low_Smoothness.
+  ?cocktail abc:hasBaseAlcohol ?basealcohol.
+  ?cocktail abc:hasSecondaryAlcohol ?secondaryalcohol.
+  ?cocktail abc:hasSoftner ?softner.
+  ?cocktail abc:hasStraw ?straw.
+  ?cocktail abc:hasDecoration ?deco.
+  ?cocktail abc:isServedIn ?glass.
+}
+
+//all table to show at first
+
+SELECT distinct ?cocktail ?basealcohol ?secondaryalcohol ?softner ?straw ?deco ?glass
+WHERE {
+  ?alcoholclass rdfs:subClassOf* abc:Alcoholic_Beverage.
+  ?basealcohol rdf:type ?alcoholclass.
+  ?cocktail abc:hasBaseAlcohol ?basealcohol.
+  ?cocktail abc:hasSecondaryAlcohol ?secondaryalcohol.
+  ?cocktail abc:hasSoftner ?softner.
+  ?cocktail abc:hasStraw ?straw.
+  ?cocktail abc:hasDecoration ?deco.
+  ?cocktail abc:isServedIn ?glass.
+}
